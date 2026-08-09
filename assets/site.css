@@ -1,0 +1,245 @@
+/* ===========================================================
+   URBAN HIPPIE — shared stylesheet, all four pages
+   Palette: black canvas, white type, red = the one active
+   color, yellow = rare highlight. No brown — black is already
+   the dark anchor now that the canvas itself is dark.
+   =========================================================== */
+:root{
+  --display:'Titan One','Bagel Fat One','Bowlby One',system-ui,sans-serif;
+  --text:'Outfit',system-ui,sans-serif;
+  --bg:#0a0a0a;
+  --ink:#ffffff;
+  --muted:rgba(255,255,255,.56);
+  --faint:rgba(255,255,255,.34);
+  --red:#FA282B;
+  --yellow:#FFE522;
+  --rule:rgba(255,255,255,.14);
+  --slot:rgba(255,255,255,.06);
+  --pad:clamp(20px,5vw,80px);
+  --gap:clamp(64px,10vw,150px);
+  --nav-h:64px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  background:var(--bg);color:var(--ink);
+  font-family:var(--text);font-size:17px;line-height:1.6;
+  overflow-x:clip;cursor:default;
+}
+h1,h2,h3{font-family:var(--display);font-weight:400;line-height:.99;letter-spacing:-.005em}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%;height:auto}
+.mono{font-family:var(--text);font-size:11.5px;letter-spacing:.15em;text-transform:uppercase;font-weight:600}
+.wrap,nav,footer,.strip{padding-left:var(--pad);padding-right:var(--pad)}
+:focus-visible{outline:2px solid var(--red);outline-offset:3px}
+
+/* ---------- fixed header: top strip + nav, one solid block ----------
+   Always fixed, on every page and every breakpoint — simpler and more
+   robust than switching between sticky and fixed by scroll-engine state. */
+#siteHeader{position:fixed;top:0;left:0;right:0;z-index:40;
+  background:rgba(10,10,10,.86);backdrop-filter:blur(12px);border-bottom:1px solid var(--rule)}
+main{padding-top:var(--nav-h)} /* --nav-h is set precisely by JS to the header's real height */
+
+.strip{display:flex;justify-content:space-between;align-items:center;gap:16px;
+  padding-top:9px;padding-bottom:9px;border-bottom:1px solid var(--rule)}
+.dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--red);
+  margin-right:8px;vertical-align:middle;animation:pulse 2.4s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.25}}
+
+nav{display:flex;justify-content:space-between;align-items:center;padding-top:12px;padding-bottom:12px}
+.logo{width:clamp(84px,24vw,160px)}
+.links{display:flex;gap:clamp(14px,3vw,36px);align-items:center}
+.links a:not(.pill){position:relative;padding-bottom:2px}
+.links a:not(.pill)::after{content:'';position:absolute;left:0;bottom:0;width:100%;height:1.5px;
+  background:var(--red);transform:scaleX(0);transform-origin:right;transition:transform .35s cubic-bezier(.22,1,.36,1)}
+.links a:not(.pill):hover::after,.links a.current::after{transform:scaleX(1);transform-origin:left}
+.pill{background:var(--red);color:#fff;padding:10px 16px;transition:background .3s;white-space:nowrap;display:inline-block}
+.pill:hover{background:var(--ink);color:var(--bg)}
+.pill-short{display:none}
+@media(max-width:480px){.pill{padding:9px 13px}.pill-full{display:none}.pill-short{display:inline}}
+@media(max-width:860px){.hide-sm{display:none}}
+
+/* ---------- page fade transition ---------- */
+html{background:var(--bg)}
+body{opacity:0;transform:translateY(6px);transition:opacity .5s cubic-bezier(.22,1,.36,1),transform .5s cubic-bezier(.22,1,.36,1)}
+body.is-ready{opacity:1;transform:none}
+body.is-leaving{opacity:0;transform:translateY(-6px);transition:opacity .38s cubic-bezier(.4,0,1,1),transform .38s cubic-bezier(.4,0,1,1)}
+
+/* ---------- smooth-scroll engine ---------- */
+#scrollArea{position:fixed;inset:0;overflow:hidden}
+html.has-smooth #scrollContent{will-change:transform}
+html:not(.has-smooth) #scrollArea{position:static;overflow:visible}
+#spacer{visibility:hidden}
+html:not(.has-smooth) #spacer{display:none}
+
+/* ---------- custom cursor (pointer:fine only) ---------- */
+.cur{position:fixed;top:0;left:0;width:9px;height:9px;border-radius:50%;background:var(--red);
+  pointer-events:none;z-index:200;transform:translate(-50%,-50%);will-change:transform}
+.cur-ring{position:fixed;top:0;left:0;width:34px;height:34px;border-radius:50%;border:1px solid rgba(255,255,255,.4);
+  pointer-events:none;z-index:200;transform:translate(-50%,-50%);transition:width .25s,height .25s,border-color .25s;will-change:transform}
+.cur-ring.big{width:64px;height:64px;border-color:var(--red)}
+html.has-cursor,html.has-cursor *{cursor:none!important}
+
+section{position:relative;z-index:2}
+.pad{padding-top:var(--gap);padding-bottom:var(--gap)}
+.eyebrow{display:flex;align-items:center;gap:14px;color:var(--faint);margin-bottom:clamp(26px,4vw,48px)}
+.eyebrow::after{content:'';flex:1;height:1px;background:var(--rule)}
+
+/* ---------- marquee ---------- */
+.marquee{background:var(--red);color:var(--bg);overflow:hidden;padding:13px 0;position:relative;z-index:2}
+.track{display:flex;gap:56px;width:max-content;animation:scroll 30s linear infinite}
+.track span{white-space:nowrap;font-weight:600}
+@keyframes scroll{to{transform:translateX(-50%)}}
+
+/* ---------- buttons ---------- */
+.cta{display:inline-flex;align-items:center;gap:14px;background:var(--red);color:#fff;padding:15px 26px;
+  font-family:var(--text);font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;font-weight:600;
+  transition:background .3s,transform .3s,color .3s}
+.cta:hover{background:var(--yellow);color:var(--bg)}
+.cta i{font-style:normal;transition:transform .3s}
+.cta:hover i{transform:translateX(5px)}
+.cta.ghost{background:transparent;border:1px solid var(--rule);color:var(--ink)}
+.cta.ghost:hover{border-color:var(--red);background:transparent;color:var(--ink)}
+
+/* ---------- hero ---------- */
+.hero{position:relative;display:flex;flex-direction:column;
+  padding-top:clamp(30px,5vw,60px);padding-bottom:clamp(30px,5vw,66px)}
+.hero-copy{max-width:640px}
+.hero h1{font-size:clamp(2.4rem,7.4vw,8rem);max-width:14ch;line-height:1.02}
+.hero h1 em{font-style:normal;display:block}
+.hero-copy>p{margin-top:clamp(22px,3vw,38px);max-width:33ch;color:var(--muted)}
+.hero .cta{margin-top:clamp(24px,3vw,38px)}
+.hero-media{position:relative;z-index:1;overflow:hidden;border-radius:2px;
+  margin-top:clamp(32px,6vw,56px);aspect-ratio:4/3}
+@media(min-width:620px){.hero-media{aspect-ratio:16/9}}
+@media(min-width:1100px){.hero-media{aspect-ratio:21/8}}
+.hero-media img{width:100%;height:100%;object-fit:cover;object-position:56% 40%;filter:grayscale(.15) contrast(1.04)}
+
+/* ---------- page header (about / wholesale / contact) ---------- */
+.pagehead{padding-top:clamp(60px,9vw,120px);padding-bottom:clamp(40px,6vw,70px)}
+.pagehead h1{font-size:clamp(2.4rem,7vw,6.4rem);max-width:16ch}
+.pagehead p{margin-top:20px;color:var(--muted);max-width:48ch;font-size:clamp(16px,1.4vw,19px)}
+
+/* ---------- statement ---------- */
+.statement h2{font-size:clamp(1.9rem,5.4vw,4.9rem);max-width:17ch}
+
+/* ---------- farm to cup ---------- */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(16px,2.4vw,34px)}
+@media(max-width:900px){.steps{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:520px){.steps{grid-template-columns:1fr}}
+.step-img{aspect-ratio:3/4;background:var(--slot);border:1px solid var(--rule);margin-bottom:20px;
+  display:flex;align-items:flex-end;padding:16px;color:var(--faint);overflow:hidden;
+  transition:transform .5s cubic-bezier(.22,1,.36,1),border-color .4s}
+.step:hover .step-img{transform:translateY(-8px) scale(1.015);border-color:var(--red)}
+.step-img span{font-family:var(--text);font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;font-weight:500;line-height:1.7}
+.step h3{font-size:1.3rem;margin-bottom:10px}
+.step p{color:var(--muted);font-size:15.5px}
+.step .num{color:var(--red);margin-bottom:10px;display:block}
+
+/* ---------- founder teaser (home) ---------- */
+.founder{display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,5vw,88px);align-items:center}
+@media(max-width:860px){.founder{grid-template-columns:1fr}}
+.founder-img{aspect-ratio:4/5;background:var(--slot);border:1px solid var(--rule);display:flex;align-items:flex-end;
+  padding:20px;color:var(--faint)}
+.founder-img span{font-family:var(--text);font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;font-weight:500;line-height:1.8}
+.founder h2{font-size:clamp(1.7rem,3.9vw,3.4rem)}
+.founder p{margin-top:24px;color:var(--muted);max-width:42ch}
+.textlink{display:inline-flex;align-items:center;gap:12px;margin-top:32px;border-bottom:1.5px solid var(--red);padding-bottom:5px}
+.textlink i{font-style:normal;color:var(--red);transition:transform .3s}
+.textlink:hover i{transform:translateX(6px)}
+
+/* ---------- recognition — awards-ticker style ---------- */
+.awardrow{display:grid;grid-template-columns:100px 1fr 2fr;gap:clamp(14px,3vw,40px);align-items:baseline;
+  padding:22px 0;border-top:1px solid var(--rule)}
+.awardrow:last-of-type{border-bottom:1px solid var(--rule)}
+.awardrow .yr{color:var(--yellow)}
+.awardrow h3{font-size:clamp(1.15rem,2.2vw,1.7rem);font-family:var(--text);font-weight:600;letter-spacing:-.01em}
+.awardrow p{color:var(--muted);font-size:15px}
+@media(max-width:700px){.awardrow{grid-template-columns:1fr;gap:6px}.awardrow .yr{order:-1}}
+
+/* ---------- craft tag pills (about) ---------- */
+.tagblock{margin-bottom:clamp(28px,4vw,44px)}
+.tagblock .lbl{color:var(--faint);margin-bottom:14px;display:block}
+.tags{display:flex;flex-wrap:wrap;gap:10px}
+.tags span{border:1px solid var(--rule);padding:9px 16px;font-size:14px;transition:border-color .25s,color .25s}
+.tags span:hover{border-color:var(--red);color:var(--yellow)}
+
+/* ---------- about: story blocks ---------- */
+.story{max-width:66ch}
+.story h2{font-size:clamp(1.7rem,3.6vw,3rem);margin-bottom:18px;max-width:16ch}
+.story p{color:var(--muted);margin-bottom:16px;font-size:clamp(16px,1.3vw,18.5px)}
+.story p:last-child{margin-bottom:0}
+.timeline{display:grid;gap:0;max-width:520px}
+.timeline div{padding:16px 0;border-top:1px solid var(--rule);font-family:var(--text);font-weight:600;
+  letter-spacing:.02em;font-size:15px;color:var(--ink)}
+.timeline div:last-child{border-bottom:1px solid var(--rule)}
+.philosophy{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(24px,4vw,50px)}
+@media(max-width:760px){.philosophy{grid-template-columns:1fr}}
+.philosophy h3{font-family:var(--display);font-size:1.5rem;color:var(--yellow);margin-bottom:12px}
+.philosophy p{color:var(--muted);font-size:15.5px}
+.signed{max-width:56ch;padding-top:clamp(50px,7vw,90px);border-top:1px solid var(--rule)}
+.signed p{font-size:clamp(18px,2vw,24px);line-height:1.5;margin-bottom:16px}
+.signed .who{margin-top:28px;color:var(--muted);font-size:15px}
+.signed .who b{color:var(--ink);display:block;font-family:var(--text);font-weight:600;font-size:16px;margin-bottom:2px}
+
+/* ---------- wholesale ---------- */
+.offer{display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,5vw,80px)}
+@media(max-width:800px){.offer{grid-template-columns:1fr}}
+.offer ul{list-style:none;display:grid;gap:16px}
+.offer li{display:flex;gap:14px;color:var(--muted);font-size:16px}
+.offer li::before{content:'—';color:var(--red);flex-shrink:0}
+.panel{border:1px solid var(--rule);padding:clamp(28px,4vw,44px)}
+.panel h3{font-family:var(--display);font-size:clamp(1.3rem,2.4vw,1.9rem);margin-bottom:14px}
+.panel p{color:var(--muted);margin-bottom:24px;font-size:15.5px}
+
+/* ---------- contact ---------- */
+.reach-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(20px,4vw,60px);margin-top:clamp(40px,6vw,70px)}
+@media(max-width:760px){.reach-grid{grid-template-columns:1fr}}
+.reach-list{list-style:none;display:grid;gap:18px}
+.reach-list a{font-size:clamp(18px,2vw,24px);font-family:var(--display);display:inline-block;transition:color .25s}
+.reach-list a:hover{color:var(--red)}
+.contact-panels{display:grid;grid-template-columns:1fr 1fr;gap:clamp(16px,3vw,28px);margin-top:clamp(50px,7vw,90px)}
+@media(max-width:700px){.contact-panels{grid-template-columns:1fr}}
+.art-slot{aspect-ratio:3/4;background:var(--slot);border:1px solid var(--rule);display:flex;align-items:center;
+  justify-content:center;text-align:center;color:var(--faint)}
+.art-slot span{font-family:var(--text);font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;line-height:1.9}
+
+/* ---------- closing ---------- */
+.closing{text-align:center;padding-top:clamp(80px,11vw,160px);padding-bottom:clamp(80px,11vw,160px)}
+.closing h2{font-size:clamp(1.9rem,6.2vw,6.2rem);max-width:15ch;margin:0 auto;line-height:1.02}
+
+/* ---------- footer ---------- */
+footer{border-top:1px solid var(--rule);padding-top:clamp(50px,7vw,88px);padding-bottom:34px;position:relative;z-index:2}
+.fcols{display:grid;grid-template-columns:2fr 1fr 1fr;gap:clamp(30px,5vw,70px);padding-bottom:54px}
+@media(max-width:760px){.fcols{grid-template-columns:1fr 1fr}.fcols>div:first-child{grid-column:1/-1}}
+.flogo{width:clamp(150px,20vw,200px);margin-bottom:28px}
+.fcols h3{font-size:clamp(1.4rem,3vw,2.1rem);max-width:15ch}
+.fcols ul{list-style:none;display:grid;gap:11px}
+.fcols li a{color:var(--muted);transition:color .25s}
+.fcols li a:hover{color:var(--yellow)}
+.fcols .lbl{color:var(--faint);margin-bottom:20px;display:block}
+.fbot{border-top:1px solid var(--rule);padding-top:24px;display:flex;justify-content:space-between;
+  gap:18px;flex-wrap:wrap;color:var(--faint)}
+
+/* ---------- reveal ---------- */
+.rv{opacity:0;transform:translateY(30px);transition:opacity .9s cubic-bezier(.22,1,.36,1),transform .9s cubic-bezier(.22,1,.36,1)}
+.rv.in{opacity:1;transform:none}
+
+/* Hero / page-header content reveals on load, not on scroll-into-view.
+   It's above the fold by definition — gating it behind an
+   IntersectionObserver risks exactly the bug it had: an element
+   sitting a few px below the fold-detection margin stays invisible
+   until the visitor scrolls, even though they never had to. */
+.rv-hero{opacity:0;transform:translateY(24px);transition:opacity .8s cubic-bezier(.22,1,.36,1),transform .8s cubic-bezier(.22,1,.36,1)}
+.rv-hero.in{opacity:1;transform:none}
+
+.rv.d1,.rv-hero.d1{transition-delay:.09s}
+.rv.d2,.rv-hero.d2{transition-delay:.18s}
+.rv.d3,.rv-hero.d3{transition-delay:.27s}
+
+@media(prefers-reduced-motion:reduce){
+  *{animation:none!important;transition-duration:.01ms!important}
+  .rv{opacity:1;transform:none}
+  body{opacity:1;transform:none}
+  .cur,.cur-ring{display:none}
+}
