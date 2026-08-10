@@ -107,16 +107,23 @@ section{position:relative;z-index:2}
 .cta.ghost{background:transparent;border:1px solid var(--rule);color:var(--ink)}
 .cta.ghost:hover{border-color:var(--red);background:transparent;color:var(--ink)}
 
-/* ---------- hero ---------- */
-.hero{position:relative;display:flex;flex-direction:column;
-  padding-top:clamp(30px,5vw,60px);padding-bottom:clamp(30px,5vw,66px)}
-.hero-copy{max-width:640px}
-.hero h1{font-size:clamp(2.4rem,7.4vw,8rem);max-width:14ch;line-height:1.02}
+/* ---------- hero — everything fits on load, one screen, both breakpoints ---------- */
+.hero{position:relative;display:flex;align-items:center;gap:clamp(24px,4vw,64px);
+  min-height:calc(100svh - var(--nav-h));
+  padding-top:clamp(20px,3vw,36px);padding-bottom:clamp(20px,3vw,36px)}
+.hero-copy{flex:1 1 56%;max-width:560px}
+.hero h1{font-size:clamp(2rem,5vw,5rem);max-width:12ch;line-height:1.03}
 .hero h1 em{font-style:normal;display:block}
-.hero-copy>p{margin-top:clamp(22px,3vw,38px);max-width:33ch;color:var(--muted)}
-.hero .cta{margin-top:clamp(24px,3vw,38px)}
-.hero-media{position:relative;z-index:1;margin-top:clamp(32px,6vw,56px);text-align:center}
-.hero-media img{max-width:min(100%,560px);width:100%;height:auto;margin:0 auto}
+.hero-copy>p{margin-top:clamp(16px,2.2vw,28px);max-width:32ch;color:var(--muted)}
+.hero .cta{margin-top:clamp(18px,2.4vw,30px)}
+.hero-media{flex:1 1 40%;display:flex;justify-content:center;align-items:center;min-width:0}
+.hero-media img{max-width:100%;max-height:min(50svh,440px);width:auto;height:auto;margin:0 auto}
+@media(max-width:760px){
+  .hero{flex-direction:column;align-items:flex-start;gap:clamp(18px,4vw,28px);text-align:left}
+  .hero-copy{max-width:none}
+  .hero-media{width:100%}
+  .hero-media img{max-height:26svh;margin:0 auto}
+}
 
 /* ---------- page header (about / wholesale / contact) ---------- */
 .pagehead{padding-top:clamp(60px,9vw,120px);padding-bottom:clamp(40px,6vw,70px)}
