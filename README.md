@@ -9,9 +9,9 @@ wholesale.html   Café / wholesale enquiries
 contact.html     Contact
 assets/
   site.css       All shared styling
-  site.js        Cursor, smooth scroll, WhatsApp links, page transitions
+  site.js        Smooth scroll, magnetic buttons, WhatsApp links, page transitions
   logo-horizontal.png
-  branch.webp    Hero image
+  branch.webp    Hero illustration, background removed
 ```
 
 ## Before it's live

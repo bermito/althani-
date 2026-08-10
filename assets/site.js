@@ -77,29 +77,10 @@
   })();
 
   /* -----------------------------------------------------------
-     4. Custom cursor + magnetic buttons — desktop / trackpad only.
-        Touch devices keep the system cursor; nothing below runs.
+     4. Magnetic buttons — desktop / trackpad only. Touch devices
+        get the plain button; nothing below runs there.
      ----------------------------------------------------------- */
   if(FINE && !REDUCE){
-    document.documentElement.classList.add('has-cursor');
-    var dot = document.createElement('div'); dot.className = 'cur';
-    var ring = document.createElement('div'); ring.className = 'cur-ring';
-    document.body.appendChild(dot); document.body.appendChild(ring);
-
-    var mx=innerWidth/2, my=innerHeight/2, rx=mx, ry=my;
-    window.addEventListener('mousemove', function(e){ mx=e.clientX; my=e.clientY; });
-    (function loop(){
-      requestAnimationFrame(loop);
-      rx += (mx-rx)*.18; ry += (my-ry)*.18;
-      dot.style.transform  = 'translate(' + mx + 'px,' + my + 'px) translate(-50%,-50%)';
-      ring.style.transform = 'translate(' + rx + 'px,' + ry + 'px) translate(-50%,-50%)';
-    })();
-
-    document.querySelectorAll('a, button, .magnetic').forEach(function(el){
-      el.addEventListener('mouseenter', function(){ ring.classList.add('big'); });
-      el.addEventListener('mouseleave', function(){ ring.classList.remove('big'); });
-    });
-
     /* magnetic pull on buttons */
     document.querySelectorAll('.magnetic').forEach(function(el){
       var tx=0, ty=0, cx=0, cy=0;
