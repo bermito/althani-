@@ -16,13 +16,18 @@ assets/
 
 ## Before it's live
 
-Open `assets/site.js`, find this line near the top, and put in the real number:
+One thing left to fill in.
 
-```js
-var WHATSAPP_NUMBER = '91XXXXXXXXXX';
-```
+**Domain, for SEO.** Each of the four HTML files has the placeholder `https://YOURDOMAIN.COM` in four spots near the top (canonical link, Open Graph, Twitter Card). Once you have a real domain, find-and-replace `YOURDOMAIN.COM` with it in all four files — any text editor works, or edit directly on GitHub. This is what controls the preview card when someone shares the site on WhatsApp, Instagram, or anywhere else. Until it's set, those tags point at a placeholder and won't break anything, they just won't be correct yet.
 
-That one line updates every "Order on WhatsApp" button across all four pages.
+The WhatsApp number is already set in `assets/site.js` (`WHATSAPP_NUMBER`) — change it there directly if it ever needs to change.
+
+## What's already handled
+
+- Favicon (all standard sizes, plus `favicon.ico` for older browsers/taskbars)
+- A branded 1200×630 share image (`assets/og-image.jpg`) for link previews
+- Meta description, Open Graph, and Twitter Card tags on every page
+- `robots: index, follow` so search engines can crawl it
 
 ## Upload to GitHub
 
