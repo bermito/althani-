@@ -38,7 +38,16 @@
 <header id="siteHeader">
   <div class="strip mono">
     <span><span class="dot"></span><span class="js-clock">--:--:--</span> IST</span>
-    <span>Shipping across India</span>
+    <div class="ticker-wrap">
+      <div class="ticker-track"><span>FARM TO CUP CONSULTING</span><span>ORIGIN &amp; PROCESSING SUPPORT</span><span>ROAST PROFILING &amp; QC</span><span>SOURCING + MENU BUILDS</span><span>BARISTA TRAINING</span><span>CUPPING &amp; GREEN GRADING</span><span>COFFEE TASTING SALONS</span><span>POP-UP BARS &amp; LIVE ROASTS</span><a href="#" class="book-session js-wa" data-wa-msg="Hi, I'd like to book a session.">
+        <span class="blob b1"></span><span class="blob b2"></span><span class="blob b3"></span>
+        <span class="bs-text">Book a session &rarr;</span>
+      </a><span>FARM TO CUP CONSULTING</span><span>ORIGIN &amp; PROCESSING SUPPORT</span><span>ROAST PROFILING &amp; QC</span><span>SOURCING + MENU BUILDS</span><span>BARISTA TRAINING</span><span>CUPPING &amp; GREEN GRADING</span><span>COFFEE TASTING SALONS</span><span>POP-UP BARS &amp; LIVE ROASTS</span><a href="#" class="book-session js-wa" data-wa-msg="Hi, I'd like to book a session.">
+        <span class="blob b1"></span><span class="blob b2"></span><span class="blob b3"></span>
+        <span class="bs-text">Book a session &rarr;</span>
+      </a></div>
+    </div>
+    <span class="ship-text">Shipping across India</span>
   </div>
   <nav class="wrap">
     <a href="index.html" aria-label="Urban Hippie Coffee Roasters, home">
@@ -47,11 +56,21 @@
     <div class="links mono">
       <a href="about.html" class="hide-sm">About</a>
       <a href="wholesale.html" class="hide-sm">Wholesale</a>
+      <a href="training.html" class="hide-sm">Training</a>
       <a href="contact.html" class="hide-sm">Contact</a>
       <a href="#" class="pill magnetic js-wa"><span class="pill-full">Order on WhatsApp</span><span class="pill-short">WhatsApp</span></a>
+      <button id="menuToggle" class="menu-toggle" aria-label="Menu" aria-expanded="false" aria-controls="mobileMenu">
+        <span class="mi mi-open"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></span><span class="mi mi-close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M5 5l14 14M19 5L5 19"/></svg></span>
+      </button>
     </div>
   </nav>
 </header>
+<div id="mobileMenu" class="mobile-menu">
+  <a href="about.html">About</a>
+  <a href="wholesale.html">Wholesale</a>
+  <a href="training.html">Training</a>
+  <a href="contact.html">Contact</a>
+</div>
 
 <div id="scrollArea"><div id="scrollContent">
 <main>
@@ -73,11 +92,19 @@
   <a href="#" class="cta magnetic js-wa rv" style="font-size:13px;padding:19px 32px">Order on WhatsApp <i>&rarr;</i></a>
 
   <div class="reach-grid">
-    <ul class="reach-list rv d1">
-      <li><a href="#" class="js-wa">WhatsApp</a></li>
-      <li><a href="#">Instagram</a></li>
-      <li><a href="#">Email</a></li>
-      <li><a href="#">Phone</a></li>
+    <ul class="reach-icons reach-icons-lg rv d1">
+      <li>
+        <a href="#" class="js-wa reach-icon" aria-label="WhatsApp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 20l1.4-3.6A7.7 7.7 0 1 1 12 19.7c-1.3 0-2.5-.3-3.6-.9L6 20z"/><path d="M9 10.2c0 3 2.8 5.8 5.8 5.8.6 0 1-.5.9-1l-.3-1.2c-.1-.4-.5-.6-.8-.5l-1.1.4c-.9-.5-1.6-1.2-2.1-2.1l.4-1.1c.1-.4 0-.7-.5-.8l-1.2-.3c-.5-.1-1 .3-1 .9z"/></svg></a>
+        <a href="#" class="js-wa reach-num">+91 98954 74842</a>
+      </li>
+      <li>
+        <a href="https://www.instagram.com/koyanalthani" target="_blank" rel="noopener" class="reach-icon" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.2" cy="6.8" r="1"/></svg></a>
+        <a href="https://www.instagram.com/koyanalthani" target="_blank" rel="noopener" class="reach-num">@koyanalthani</a>
+      </li>
+      <li>
+        <span class="reach-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="M4 6.5l8 6.5 8-6.5"/></svg></span>
+        <a href="mailto:koyanalthani@gmail.com" class="reach-num">koyanalthani@gmail.com</a>
+      </li>
     </ul>
     <p class="rv d2" style="color:var(--muted);max-width:38ch;align-self:end">Shipping across India. Roasted to order, sent out the week it's roasted.</p>
   </div>
@@ -100,17 +127,25 @@
       <span class="lbl mono">Enquiries</span>
       <ul>
         <li><a href="wholesale.html">Wholesale</a></li>
-        <li><a href="wholesale.html">Corporate gifting</a></li>
-        <li><a href="contact.html">Training &amp; workshops</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="training.html">Training &amp; workshops</a></li>
       </ul>
     </div>
     <div>
       <span class="lbl mono">Reach</span>
-      <ul>
-        <li><a href="#" class="js-wa">WhatsApp</a></li>
-        <li><a href="#">Instagram</a></li>
-        <li><a href="#">Email</a></li>
-        <li><a href="#">Phone</a></li>
+      <ul class="reach-icons">
+        <li>
+          <a href="#" class="js-wa reach-icon" aria-label="WhatsApp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 20l1.4-3.6A7.7 7.7 0 1 1 12 19.7c-1.3 0-2.5-.3-3.6-.9L6 20z"/><path d="M9 10.2c0 3 2.8 5.8 5.8 5.8.6 0 1-.5.9-1l-.3-1.2c-.1-.4-.5-.6-.8-.5l-1.1.4c-.9-.5-1.6-1.2-2.1-2.1l.4-1.1c.1-.4 0-.7-.5-.8l-1.2-.3c-.5-.1-1 .3-1 .9z"/></svg></a>
+          <a href="#" class="js-wa reach-num">+91 98954 74842</a>
+        </li>
+        <li>
+          <a href="https://www.instagram.com/koyanalthani" target="_blank" rel="noopener" class="reach-icon" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.2" cy="6.8" r="1"/></svg></a>
+          <a href="https://www.instagram.com/koyanalthani" target="_blank" rel="noopener" class="reach-num">@koyanalthani</a>
+        </li>
+        <li>
+          <span class="reach-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="M4 6.5l8 6.5 8-6.5"/></svg></span>
+          <a href="mailto:koyanalthani@gmail.com" class="reach-num">koyanalthani@gmail.com</a>
+        </li>
       </ul>
     </div>
   </div>

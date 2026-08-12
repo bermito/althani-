@@ -48,13 +48,42 @@
   });
 
   /* -----------------------------------------------------------
-     2. Current-page nav highlight
+     2. Current-page nav highlight (top nav + mobile menu)
      ----------------------------------------------------------- */
   var here = (location.pathname.split('/').pop() || 'index.html');
-  document.querySelectorAll('.links a[href]').forEach(function(a){
+  document.querySelectorAll('.links a[href], .mobile-menu a[href]').forEach(function(a){
     var href = a.getAttribute('href');
     if(href === here || (here === '' && href === 'index.html')) a.classList.add('current');
   });
+
+  /* -----------------------------------------------------------
+     2b. Mobile menu — the only way to reach About/Wholesale/
+         Contact once the nav links hide at 860px.
+     ----------------------------------------------------------- */
+  (function(){
+    var btn = document.getElementById('menuToggle');
+    var menu = document.getElementById('mobileMenu');
+    if(!btn || !menu) return;
+
+    function close(){
+      document.documentElement.classList.remove('menu-open');
+      btn.setAttribute('aria-expanded', 'false');
+    }
+    function open(){
+      document.documentElement.classList.add('menu-open');
+      btn.setAttribute('aria-expanded', 'true');
+    }
+    btn.addEventListener('click', function(){
+      document.documentElement.classList.contains('menu-open') ? close() : open();
+    });
+    menu.querySelectorAll('a').forEach(function(a){ a.addEventListener('click', close); });
+    document.addEventListener('click', function(e){
+      if(document.documentElement.classList.contains('menu-open') &&
+         !menu.contains(e.target) && !btn.contains(e.target)) close();
+    });
+    document.addEventListener('keydown', function(e){ if(e.key === 'Escape') close(); });
+    window.addEventListener('resize', function(){ if(window.innerWidth > 860) close(); });
+  })();
 
   /* -----------------------------------------------------------
      3a. Hero / page-header reveals — fire on load, unconditionally.

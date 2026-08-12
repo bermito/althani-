@@ -40,11 +40,47 @@ img{display:block;max-width:100%;height:auto}
   background:rgba(10,10,10,.86);backdrop-filter:blur(12px);border-bottom:1px solid var(--rule)}
 main{padding-top:var(--nav-h)} /* --nav-h is set precisely by JS to the header's real height */
 
-.strip{display:flex;justify-content:space-between;align-items:center;gap:16px;
+.strip{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:16px;
   padding-top:9px;padding-bottom:9px;border-bottom:1px solid var(--rule)}
 .dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--red);
   margin-right:8px;vertical-align:middle;animation:pulse 2.4s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.25}}
+@media(max-width:700px){.ship-text{display:none}}
+
+/* ---------- booking ticker — centered in the top strip, between
+   the clock and "Shipping across India". Plain scrolling text for
+   the service list; the liquid colour treatment is scoped to just
+   the final "Book a session" item, which is also the only clickable
+   piece. Slow on purpose — this should feel like ambient detail,
+   not something competing for attention. ---------- */
+.ticker-wrap{justify-self:stretch;overflow:hidden;width:100%;
+  height:26px;position:relative}
+.ticker-track{display:flex;align-items:center;gap:26px;white-space:nowrap;
+  animation:tickerslide 4.725s linear infinite;transform:translateX(-50%)}
+@keyframes tickerslide{0%{transform:translateX(-50%)}100%{transform:translateX(0%)}}
+.ticker-track > span{font-family:var(--text);font-size:10px;font-weight:600;
+  letter-spacing:.08em;text-transform:uppercase;color:var(--muted);flex-shrink:0}
+
+.book-session{position:relative;overflow:hidden;display:inline-flex;align-items:center;
+  padding:4px 12px;flex-shrink:0}
+.book-session .blob{position:absolute;border-radius:50%;filter:blur(8px);opacity:.85}
+.book-session .b1{width:60%;height:150%;top:-25%;left:-10%;background:var(--red);
+  animation:blobA 14s ease-in-out infinite}
+.book-session .b2{width:55%;height:140%;top:-20%;left:35%;background:#a8790c;
+  animation:blobB 18s ease-in-out infinite}
+.book-session .b3{width:58%;height:145%;top:-22%;left:58%;background:#3d6b3a;
+  animation:blobC 22s ease-in-out infinite}
+@keyframes blobA{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(10%,-8%) scale(1.12)}}
+@keyframes blobB{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-12%,9%) scale(.92)}}
+@keyframes blobC{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-8%,-10%) scale(1.08)}}
+.book-session .bs-text{position:relative;z-index:1;font-family:var(--text);font-size:10px;
+  font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#fff;
+  text-shadow:0 1px 3px rgba(0,0,0,.85),0 0 6px rgba(0,0,0,.5)}
+
+@media(prefers-reduced-motion:reduce){
+  .book-session .blob{animation:none}
+  .ticker-track{animation:none;transform:translateX(0)}
+}
 
 nav{display:flex;justify-content:space-between;align-items:center;padding-top:12px;padding-bottom:12px}
 .logo{width:clamp(84px,24vw,160px)}
@@ -58,6 +94,27 @@ nav{display:flex;justify-content:space-between;align-items:center;padding-top:12
 .pill-short{display:none}
 @media(max-width:480px){.pill{padding:9px 13px}.pill-full{display:none}.pill-short{display:inline}}
 @media(max-width:860px){.hide-sm{display:none}}
+
+/* ---------- mobile menu — the only way to reach About/Wholesale/Contact
+   once the nav links hide at 860px. Hidden entirely above that width. ---------- */
+.menu-toggle{display:none;background:none;border:1px solid var(--rule);border-radius:50%;
+  width:38px;height:38px;color:var(--ink);align-items:center;justify-content:center;
+  padding:0;cursor:pointer;transition:border-color .25s}
+.menu-toggle svg{width:18px;height:18px}
+.menu-toggle .mi{display:flex}
+.menu-toggle .mi-close{display:none}
+.menu-toggle[aria-expanded="true"] .mi-open{display:none}
+.menu-toggle[aria-expanded="true"] .mi-close{display:flex}
+@media(max-width:860px){.menu-toggle{display:flex}}
+
+.mobile-menu{display:none;position:fixed;top:var(--nav-h);left:0;right:0;z-index:39;
+  flex-direction:column;background:var(--bg);border-bottom:1px solid var(--rule);
+  padding:8px var(--pad) 18px;max-height:calc(100svh - var(--nav-h));overflow-y:auto}
+.mobile-menu a{padding:14px 0;border-top:1px solid var(--rule);font-family:var(--display);
+  font-size:1.3rem;color:var(--ink)}
+.mobile-menu a:active{color:var(--red)}
+html.menu-open .mobile-menu{display:flex}
+html.menu-open{overflow:hidden}
 
 /* ---------- page fade transition ---------- */
 html{background:var(--bg)}
@@ -223,6 +280,22 @@ section{position:relative;z-index:2}
 @media(max-width:760px){.philosophy{grid-template-columns:1fr}}
 .philosophy h3{font-family:var(--display);font-size:1.5rem;color:var(--yellow);margin-bottom:12px}
 .philosophy p{color:var(--muted);font-size:15.5px}
+
+/* ---------- training page — three equal-weight service blocks ---------- */
+.tgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(32px,4.5vw,56px)}
+@media(max-width:900px){.tgrid{grid-template-columns:1fr}}
+.tblock h3{font-family:var(--display);font-size:clamp(1.35rem,2.4vw,1.9rem);margin-bottom:10px}
+.tblock>p{color:var(--muted);font-size:15.5px;margin-bottom:clamp(26px,3vw,36px)}
+.titem{border-top:1px solid var(--rule);padding-top:16px;margin-top:16px}
+.titem:first-of-type{margin-top:0}
+.titem .tlabel{display:block;font-family:var(--text);font-weight:600;color:var(--ink);
+  margin-bottom:8px;font-size:15px}
+.titem p{color:var(--muted);font-size:14.5px;line-height:1.55;margin:0}
+
+.closing-cta h2{font-family:var(--display);font-size:clamp(1.9rem,4.4vw,3.6rem);
+  max-width:16ch;margin-bottom:20px}
+.closing-cta p{color:var(--muted);max-width:54ch;font-size:clamp(16px,1.4vw,19px);
+  margin-bottom:clamp(28px,3.5vw,38px)}
 .signed{max-width:56ch;padding-top:clamp(50px,7vw,90px);border-top:1px solid var(--rule)}
 .signed p{font-size:clamp(18px,2vw,24px);line-height:1.5;margin-bottom:16px}
 .signed .who{margin-top:28px;color:var(--muted);font-size:15px}
@@ -244,6 +317,21 @@ section{position:relative;z-index:2}
 .reach-list{list-style:none;display:grid;gap:18px}
 .reach-list a{font-size:clamp(18px,2vw,24px);font-family:var(--display);display:inline-block;transition:color .25s}
 .reach-list a:hover{color:var(--red)}
+
+/* reach icons — footer (small) + Contact page (large). Icon is its own
+   hit target; the number, handle, or email sits beside it as a second link. */
+.reach-icons{list-style:none;display:grid;gap:16px}
+.reach-icons li{display:flex;align-items:center;gap:14px}
+.reach-icon{display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  width:38px;height:38px;border:1px solid var(--rule);border-radius:50%;color:var(--muted);
+  transition:color .25s,border-color .25s}
+.reach-icon svg{width:18px;height:18px}
+.reach-icons li:hover .reach-icon{color:var(--red);border-color:var(--red)}
+.reach-num{color:var(--muted);font-size:15px;transition:color .25s}
+.reach-icons li:hover .reach-num{color:var(--ink)}
+.reach-icons-lg .reach-icon{width:52px;height:52px}
+.reach-icons-lg .reach-icon svg{width:24px;height:24px}
+.reach-icons-lg .reach-num{font-size:clamp(17px,1.8vw,21px);font-family:var(--display)}
 .contact-panels{display:grid;grid-template-columns:1fr 1fr;gap:clamp(16px,3vw,28px);margin-top:clamp(50px,7vw,90px)}
 @media(max-width:700px){.contact-panels{grid-template-columns:1fr}}
 .art-slot{aspect-ratio:3/4;background:var(--slot);border:1px solid var(--rule);display:flex;align-items:center;
@@ -264,6 +352,8 @@ footer{border-top:1px solid var(--rule);padding-top:clamp(50px,7vw,88px);padding
 .fcols li a{color:var(--muted);transition:color .25s}
 .fcols li a:hover{color:var(--yellow)}
 .fcols .lbl{color:var(--faint);margin-bottom:20px;display:block}
+.fcols .reach-icons li:hover .reach-icon{color:var(--yellow);border-color:var(--yellow)}
+.fcols .reach-icons li:hover .reach-num{color:var(--yellow)}
 .fbot{border-top:1px solid var(--rule);padding-top:24px;display:flex;justify-content:space-between;
   gap:18px;flex-wrap:wrap;color:var(--faint)}
 
