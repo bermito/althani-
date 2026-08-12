@@ -16,7 +16,7 @@
         Give a button data-wa-msg="..." for a specific message,
         otherwise it falls back to the generic line below.
      ----------------------------------------------------------- */
-  var WHATSAPP_NUMBER = '91XXXXXXXXXX'; // <-- replace with the real number
+  var WHATSAPP_NUMBER = '919895474842';
   var DEFAULT_MSG = "Hi, I'd like to order coffee.";
   document.querySelectorAll('.js-wa').forEach(function(a){
     var msg = a.getAttribute('data-wa-msg') || DEFAULT_MSG;
@@ -130,7 +130,54 @@
   }
 
   /* -----------------------------------------------------------
-     6. Page-fade transition between real pages.
+     7. Farm-to-cup → Recognition ambient glow. One large soft
+        light drifts down through this span as the page scrolls,
+        fading in as Farm to Cup arrives and out before
+        Recognition's first award. A slow blob wobble runs
+        always (see site.css); a small nudge toward the cursor
+        only on desktop / trackpad.
+     ----------------------------------------------------------- */
+  (function(){
+    if(REDUCE) return;
+    var track = document.getElementById('glowTrack');
+    var glow  = document.getElementById('glow');
+    if(!track || !glow) return;
+
+    var tx=0, ty=0, nx=0, ny=0;
+    if(FINE){
+      track.addEventListener('mousemove', function(e){
+        var r = track.getBoundingClientRect();
+        tx = (e.clientX - (r.left + r.width/2)) * .12;
+        ty = (e.clientY - r.top) * .05;
+      });
+      track.addEventListener('mouseleave', function(){ tx = 0; ty = 0; });
+    }
+
+    (function frame(){
+      requestAnimationFrame(frame);
+      var r = track.getBoundingClientRect();
+      var pivot = window.innerHeight * .35;
+      var progress = Math.max(0, Math.min(1, (pivot - r.top) / r.height));
+
+      var op;
+      if(progress < .08) op = progress / .08;
+      else if(progress > .85) op = (1 - progress) / .15;
+      else op = 1;
+      op = Math.max(0, Math.min(1, op));
+
+      var glowH = glow.offsetHeight || 400;
+      var topPx = progress * Math.max(0, r.height - glowH);
+
+      nx += (tx - nx) * .08;
+      ny += (ty - ny) * .08;
+
+      glow.style.opacity = (op * .95).toFixed(2);
+      glow.style.transform = 'translate(calc(-50% + ' + nx.toFixed(1) + 'px),' + (topPx + ny).toFixed(1) + 'px)';
+    })();
+  })();
+
+  /* -----------------------------------------------------------
+     8. Page-fade transition between real pages.
         These are static files, not a single-page app — this is
         a fade-out / fade-in around a normal navigation, not a
         Barba-style content swap. It works the same whether the
