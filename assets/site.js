@@ -206,6 +206,50 @@
   })();
 
   /* -----------------------------------------------------------
+     7b. Shutter lift — the site ends at Privacy · Terms. A short
+         extra stretch of scroll past that end slides the whole
+         page up off the fixed reveal panel behind it, exposing
+         the word mark. Moves #scrollArea rather than the content
+         inside it, so it works alongside the smooth-scroll engine.
+     ----------------------------------------------------------- */
+  (function(){
+    if(REDUCE) return;
+    var area    = document.getElementById('scrollArea');
+    var panel   = document.querySelector('.reveal-panel');
+    var spacer  = document.getElementById('spacer');
+    var content = document.getElementById('scrollContent');
+    if(!area || !panel || !content) return;
+
+    function panelH(){ return panel.offsetHeight; }
+
+    /* add the shutter distance to the page height, so there's somewhere
+       to scroll to once the page proper has ended */
+    function sizeSpacer(){
+      var extra = panelH();
+      if(spacer && document.documentElement.classList.contains('has-smooth')){
+        spacer.style.height = (content.offsetHeight + extra) + 'px';
+      } else {
+        document.body.style.paddingBottom = extra + 'px';
+      }
+    }
+    sizeSpacer();
+    window.addEventListener('resize', sizeSpacer);
+    new ResizeObserver(sizeSpacer).observe(content);
+
+    function update(){
+      var doc = document.documentElement;
+      var maxScroll = doc.scrollHeight - window.innerHeight;
+      var extra = panelH();
+      var into = Math.max(0, window.scrollY - (maxScroll - extra));
+      var lift = Math.min(into, extra);
+      area.style.transform = lift > 0 ? 'translate3d(0,' + (-lift).toFixed(1) + 'px,0)' : '';
+    }
+    window.addEventListener('scroll', update, {passive:true});
+    window.addEventListener('resize', update);
+    update();
+  })();
+
+  /* -----------------------------------------------------------
      8. Page-fade transition between real pages.
         These are static files, not a single-page app — this is
         a fade-out / fade-in around a normal navigation, not a

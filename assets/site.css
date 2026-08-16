@@ -123,7 +123,10 @@ body.is-ready{opacity:1;transform:none}
 body.is-leaving{opacity:0;transform:translateY(-6px);transition:opacity .38s cubic-bezier(.4,0,1,1),transform .38s cubic-bezier(.4,0,1,1)}
 
 /* ---------- smooth-scroll engine ---------- */
-#scrollArea{position:fixed;inset:0;overflow:hidden}
+/* Opaque and above the reveal panel, so the panel stays completely
+   hidden at every normal scroll position — it only appears when the
+   page is pushed past its end (the shutter lift). */
+#scrollArea{position:fixed;inset:0;overflow:hidden;z-index:1;background:var(--bg)}
 html.has-smooth #scrollContent{will-change:transform}
 html:not(.has-smooth) #scrollArea{position:static;overflow:visible}
 #spacer{visibility:hidden}
@@ -190,6 +193,35 @@ section{position:relative;z-index:2}
 
 /* ---------- page header (about / wholesale / contact) ---------- */
 .pagehead{padding-top:clamp(60px,9vw,120px);padding-bottom:clamp(40px,6vw,70px)}
+
+/* ---------- training hero glow — two large blurred blobs drifting on
+   independent loops behind the headline. Pure CSS, no JS. Sits between
+   the navbar and the heading, behind the text; pointer-events:none so
+   it never blocks the nav or any button. Opacity kept low so the white
+   headline keeps its contrast. ---------- */
+.hero-glow-wrap{position:relative;overflow:hidden}
+.hero-glow{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.hero-glow span{position:absolute;display:block;border-radius:50%;
+  filter:blur(90px);will-change:transform}
+.hero-glow .hg1{width:min(60%,620px);aspect-ratio:1/1;top:-18%;left:4%;
+  background:radial-gradient(circle,rgba(250,40,43,.55),rgba(250,40,43,.12) 60%,transparent 75%);
+  animation:hgDrift1 26s ease-in-out infinite}
+.hero-glow .hg2{width:min(52%,520px);aspect-ratio:1/1;top:-6%;left:34%;
+  background:radial-gradient(circle,rgba(255,110,50,.42),rgba(255,110,50,.10) 58%,transparent 74%);
+  animation:hgDrift2 34s ease-in-out infinite}
+@keyframes hgDrift1{
+  0%,100%{transform:translate(0,0) scale(1)}
+  33%{transform:translate(12%,8%) scale(1.14)}
+  66%{transform:translate(-6%,4%) scale(.94)}
+}
+@keyframes hgDrift2{
+  0%,100%{transform:translate(0,0) scale(1)}
+  40%{transform:translate(-14%,10%) scale(1.1)}
+  70%{transform:translate(8%,-4%) scale(.92)}
+}
+.pagehead h1,.pagehead p{position:relative;z-index:1}
+@media(max-width:700px){.hero-glow span{filter:blur(60px)}}
+@media(prefers-reduced-motion:reduce){.hero-glow span{animation:none}}
 .pagehead h1{font-size:clamp(2.4rem,7vw,6.4rem);max-width:16ch}
 .pagehead p{margin-top:20px;color:var(--muted);max-width:48ch;font-size:clamp(16px,1.4vw,19px)}
 
@@ -343,7 +375,31 @@ section{position:relative;z-index:2}
 .closing h2{font-size:clamp(1.9rem,6.2vw,6.2rem);max-width:15ch;margin:0 auto;line-height:1.02}
 
 /* ---------- footer ---------- */
-footer{border-top:1px solid var(--rule);padding-top:clamp(50px,7vw,88px);padding-bottom:34px;position:relative;z-index:2}
+footer{border-top:1px solid var(--rule);padding-top:clamp(50px,7vw,88px);padding-bottom:34px;position:relative;z-index:2;background:var(--bg)}
+
+/* ---------- reveal panel — a normal block at the very end of the
+   document, sitting below the footer. Not fixed: making it fixed meant
+   it painted at the viewport bottom at every scroll position and leaked
+   through on shorter pages. As an ordinary element it simply scrolls
+   into view after the footer, which is the shutter effect wanted. ---------- */
+/* ---------- shutter reveal — the word mark sits fixed at the bottom of
+   the viewport, permanently behind the page. #scrollArea is opaque and
+   covers it at every normal scroll position, so it's invisible during
+   reading. The site ends at Privacy · Terms; pushing past that end lifts
+   the page off the panel like a shutter and exposes what was underneath. ---------- */
+.reveal-panel{position:fixed;left:0;right:0;bottom:0;z-index:0;
+  height:clamp(160px,24vh,280px);
+  display:flex;align-items:center;justify-content:center;
+  background:#000;pointer-events:none;overflow:hidden}
+.reveal-panel img{width:92%;max-width:1500px;height:auto;display:block}
+@media(max-width:700px){
+  .reveal-panel{height:clamp(110px,16vh,170px)}
+  .reveal-panel img{width:90%}
+}
+
+/* the gap after the footer — must punch through #scrollContent's
+   background so the fixed panel behind shows through it. Its height
+   sets how much reveal you get; matched to the panel's own height. */
 .fcols{display:grid;grid-template-columns:2fr 1fr 1fr;gap:clamp(30px,5vw,70px);padding-bottom:54px}
 @media(max-width:760px){.fcols{grid-template-columns:1fr 1fr}.fcols>div:first-child{grid-column:1/-1}}
 .flogo{width:clamp(150px,20vw,200px);margin-bottom:28px}
