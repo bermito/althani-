@@ -117,7 +117,20 @@ html.menu-open .mobile-menu{display:flex}
 html.menu-open{overflow:hidden}
 
 /* ---------- page fade transition ---------- */
-html{background:var(--bg)}
+/* ---------- rubber-band reveal, the native way ----------
+   The word lives on the <html> background. <body> paints its own opaque
+   background on top, so the word is invisible during all normal reading.
+   When the browser rubber-bands past the end (iOS/Android overscroll),
+   the body lifts and the html background shows through underneath —
+   the same mechanic koraspond.com uses. No JS, no fake spring: it's the
+   OS bounce, so it tracks the finger exactly and settles on its own. */
+html{
+  background:#000 url(assets/kozhikode-word.webp) no-repeat center bottom clamp(28px,6vh,70px);
+  background-size:min(62%,1100px) auto;
+}
+@media(max-width:900px){html{background-size:78% auto}}
+@media(max-width:700px){html{background-size:92% auto;background-position:center bottom clamp(20px,4vh,44px)}}
+body{background:var(--bg)}
 body{opacity:0;transform:translateY(6px);transition:opacity .5s cubic-bezier(.22,1,.36,1),transform .5s cubic-bezier(.22,1,.36,1)}
 body.is-ready{opacity:1;transform:none}
 body.is-leaving{opacity:0;transform:translateY(-6px);transition:opacity .38s cubic-bezier(.4,0,1,1),transform .38s cubic-bezier(.4,0,1,1)}
@@ -353,13 +366,14 @@ section{position:relative;z-index:2}
 /* reach icons — footer (small) + Contact page (large). Icon is its own
    hit target; the number, handle, or email sits beside it as a second link. */
 .reach-icons{list-style:none;display:grid;gap:16px}
-.reach-icons li{display:flex;align-items:center;gap:14px}
+.reach-icons li{display:flex;align-items:center;gap:14px;min-width:0}
 .reach-icon{display:flex;align-items:center;justify-content:center;flex-shrink:0;
   width:38px;height:38px;border:1px solid var(--rule);border-radius:50%;color:var(--muted);
   transition:color .25s,border-color .25s}
 .reach-icon svg{width:18px;height:18px}
 .reach-icons li:hover .reach-icon{color:var(--red);border-color:var(--red)}
-.reach-num{color:var(--muted);font-size:15px;transition:color .25s}
+.reach-num{color:var(--muted);font-size:15px;transition:color .25s;
+  min-width:0;overflow-wrap:anywhere}
 .reach-icons li:hover .reach-num{color:var(--ink)}
 .reach-icons-lg .reach-icon{width:52px;height:52px}
 .reach-icons-lg .reach-icon svg{width:24px;height:24px}
@@ -387,21 +401,16 @@ footer{border-top:1px solid var(--rule);padding-top:clamp(50px,7vw,88px);padding
    covers it at every normal scroll position, so it's invisible during
    reading. The site ends at Privacy · Terms; pushing past that end lifts
    the page off the panel like a shutter and exposes what was underneath. ---------- */
-.reveal-panel{position:fixed;left:0;right:0;bottom:0;z-index:0;
-  height:clamp(160px,24vh,280px);
-  display:flex;align-items:center;justify-content:center;
-  background:#000;pointer-events:none;overflow:hidden}
-.reveal-panel img{width:92%;max-width:1500px;height:auto;display:block}
-@media(max-width:700px){
-  .reveal-panel{height:clamp(110px,16vh,170px)}
-  .reveal-panel img{width:90%}
-}
+
 
 /* the gap after the footer — must punch through #scrollContent's
    background so the fixed panel behind shows through it. Its height
    sets how much reveal you get; matched to the panel's own height. */
 .fcols{display:grid;grid-template-columns:2fr 1fr 1fr;gap:clamp(30px,5vw,70px);padding-bottom:54px}
 @media(max-width:760px){.fcols{grid-template-columns:1fr 1fr}.fcols>div:first-child{grid-column:1/-1}}
+/* below ~520px the two side-by-side columns squeeze the email address
+   past the screen edge — give each column the full width instead */
+@media(max-width:520px){.fcols{grid-template-columns:1fr;gap:34px}}
 .flogo{width:clamp(150px,20vw,200px);margin-bottom:28px}
 .fcols h3{font-size:clamp(1.4rem,3vw,2.1rem);max-width:15ch}
 .fcols ul{list-style:none;display:grid;gap:11px}
