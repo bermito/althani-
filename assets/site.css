@@ -56,8 +56,11 @@ main{padding-top:var(--nav-h)} /* --nav-h is set precisely by JS to the header's
 .ticker-wrap{justify-self:stretch;overflow:hidden;width:100%;
   height:26px;position:relative}
 .ticker-track{display:flex;align-items:center;gap:26px;white-space:nowrap;
-  animation:tickerslide 4.725s linear infinite;transform:translateX(-50%)}
-@keyframes tickerslide{0%{transform:translateX(-50%)}100%{transform:translateX(0%)}}
+  animation:tickerslide 4.725s linear infinite}
+/* same direction as the red marquee below: content slides left, so items
+   read in list order (Farm to cup … Book a session) and the last item
+   actually arrives. Animating the other way ran the list backwards. */
+@keyframes tickerslide{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 .ticker-track > span{font-family:var(--text);font-size:10px;font-weight:600;
   letter-spacing:.08em;text-transform:uppercase;color:var(--muted);flex-shrink:0}
 
@@ -118,18 +121,19 @@ html.menu-open{overflow:hidden}
 
 /* ---------- page fade transition ---------- */
 /* ---------- rubber-band reveal, the native way ----------
-   The word lives on the <html> background. <body> paints its own opaque
-   background on top, so the word is invisible during all normal reading.
-   When the browser rubber-bands past the end (iOS/Android overscroll),
-   the body lifts and the html background shows through underneath —
-   the same mechanic koraspond.com uses. No JS, no fake spring: it's the
-   OS bounce, so it tracks the finger exactly and settles on its own. */
+   The word lives on the <html> background; <body> paints an opaque
+   background over it, so it's invisible during all normal reading.
+   Critically it's positioned BELOW the document's bottom edge — the
+   overscroll strip only exposes what sits past that edge, so anchoring
+   the image to 'bottom' left it hidden above the stretch and the bounce
+   showed plain black. Offsetting it down puts it inside the stretch. */
 html{
-  background:#000 url(assets/kozhikode-word.webp) no-repeat center bottom clamp(28px,6vh,70px);
+  background:#000 url(assets/kozhikode-word.webp) no-repeat;
+  background-position:center calc(100% + 105px);
   background-size:min(62%,1100px) auto;
 }
-@media(max-width:900px){html{background-size:78% auto}}
-@media(max-width:700px){html{background-size:92% auto;background-position:center bottom clamp(20px,4vh,44px)}}
+@media(max-width:900px){html{background-size:78% auto;background-position:center calc(100% + 80px)}}
+@media(max-width:700px){html{background-size:92% auto;background-position:center calc(100% + 60px)}}
 body{background:var(--bg)}
 body{opacity:0;transform:translateY(6px);transition:opacity .5s cubic-bezier(.22,1,.36,1),transform .5s cubic-bezier(.22,1,.36,1)}
 body.is-ready{opacity:1;transform:none}
